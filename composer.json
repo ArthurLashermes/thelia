@@ -88,7 +88,8 @@
         "symfony/property-info": "6.4.*",
         "symfony/runtime": "6.4.*",
         "lexik/jwt-authentication-bundle": "^2.20",
-        "symfony/debug-bundle": "6.4.*"
+        "symfony/debug-bundle": "6.4.*",
+        "fakerphp/faker": "^1.23"
     },
     "require-dev": {
         "thelia/hooktest-module": "~1.1",
@@ -100,7 +101,8 @@
         "phpstan/extension-installer": "1.1.0",
         "symfony/css-selector": "6.4.*",
         "friendsofphp/php-cs-fixer": "3.41.*",
-        "symfony/debug-bundle": "6.4.*"
+        "symfony/debug-bundle": "6.4.*",
+        "symfony/http-client": "6.4.*"
     },
     "scripts": {
         "cs-diff": [
