@@ -17,6 +17,7 @@ class ModelTest extends WebTestCase
 
     public function testPost(Post $operation, array $body): void
     {
+        $this->tearDown();
         $client = self::createClient();
         $uriTemplate = $operation->getUriTemplate();
         $this->login($client,$uriTemplate);
@@ -75,18 +76,5 @@ class ModelTest extends WebTestCase
         );
 
         $this->assertEquals(200,  $client->getResponse()->getStatusCode());
-    }
-
-    private function login($client, string $uri): void
-    {
-        if (str_contains($uri, '/admin')) {
-            $this->loginAdmin($client);
-            return;
-        }
-        if(str_contains($uri, '/front')) {
-            $this->loginCustomer($client);
-            return;
-        }
-        throw new RuntimeException(sprintf('Cannot log for the route %s', $uri));
     }
 }

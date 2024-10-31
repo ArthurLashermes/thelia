@@ -20,7 +20,7 @@ use Thelia\Api\Resource\PropelResourceInterface;
 use Thelia\Api\Test\ModelTest;
 use Thelia\Config\DatabaseConfiguration;
 
-#[AsCommand(name: 'api:generate:tests', description: 'Generate tests for APIP resource')]
+#[AsCommand(name: 'api:generate:tests:v0', description: 'Generate tests for APIP resource')]
 class CollectionTestCommand extends Command
 {
     private const NAMESPACE = 'Thelia\Api\Resource';
@@ -121,5 +121,4 @@ class CollectionTestCommand extends Command
         }
         return $body;
     }
-
 }

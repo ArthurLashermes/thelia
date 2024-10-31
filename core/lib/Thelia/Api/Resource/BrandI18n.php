@@ -21,6 +21,7 @@ class BrandI18n extends I18n
         Brand::GROUP_FRONT_READ,
         Product::GROUP_ADMIN_READ_SINGLE,
         Product::GROUP_FRONT_READ_SINGLE,
+        Brand::GROUP_ADMIN_WRITE,
     ])]
     protected ?string $title;
 
@@ -29,6 +30,7 @@ class BrandI18n extends I18n
         Brand::GROUP_FRONT_READ,
         Product::GROUP_ADMIN_READ_SINGLE,
         Product::GROUP_FRONT_READ_SINGLE,
+        Brand::GROUP_ADMIN_WRITE,
     ])]
     protected ?string $chapo;
 
@@ -37,6 +39,7 @@ class BrandI18n extends I18n
         Brand::GROUP_FRONT_READ,
         Product::GROUP_ADMIN_READ_SINGLE,
         Product::GROUP_FRONT_READ_SINGLE,
+        Brand::GROUP_ADMIN_WRITE,
     ])]
     protected ?string $description;
 

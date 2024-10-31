@@ -11,58 +11,51 @@
 
 namespace Thelia\Api\Test;
 
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestAssertionsTrait;
 use Symfony\Component\BrowserKit\AbstractBrowser;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
+use Thelia\Api\Test\Abstract\WebTestCase as BaseWebTestCase;
 
 /**
  * WebTestCase is the base class for functional tests.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class WebTestCase extends KernelTestCase
+abstract class WebTestCase extends BaseWebTestCase
 {
     use WebTestAssertionsTrait;
+
+    protected static $client;
+
+    protected static ?string $tokenAdmin = null;
+
+    protected static ?string $tokenCustomer = null;
+
 
     protected function tearDown(): void
     {
         parent::tearDown();
-        self::getClient(null);
+        static::$client = null;
     }
 
-    /**
-     * Creates a KernelBrowser.
-     *
-     * @param array $options An array of options to pass to the createKernel method
-     * @param array $server  An array of server parameters
-     */
-    protected static function createClient(array $options = [], array $server = []): AbstractBrowser
+    protected function setUp(): void
     {
-        if (static::$booted) {
-            throw new \LogicException(sprintf('Booting the kernel before calling "%s()" is not supported, the kernel should only be booted once.', __METHOD__));
+        parent::setUp();
+
+        if (null === self::$client) {
+            self::$client = static::createClient();
         }
-
-        $kernel = static::bootKernel($options);
-
-        try {
-            $client = $kernel->getContainer()->get('test.client');
-        } catch (ServiceNotFoundException) {
-            if (class_exists(KernelBrowser::class)) {
-                throw new \LogicException('You cannot create the client used in functional tests if the "framework.test" config is not set to true.');
-            }
-            throw new \LogicException('You cannot create the client used in functional tests if the BrowserKit component is not available. Try running "composer require symfony/browser-kit".');
-        }
-
-        $client->setServerParameters($server);
-
-        return self::getClient($client);
     }
 
     public function loginAdmin(AbstractBrowser $client): void
     {
+        if (null !== self::$tokenAdmin) {
+            $client->setServerParameter(key: 'HTTP_Authorization',value:  sprintf('Bearer %s',self::$tokenAdmin));
+            $client->setServerParameter(key: 'HTTP_ACCEPT',value:  'application/ld+json');
+            $client->setServerParameter(key: 'CONTENT_TYPE',value:  'application/ld+json');
+            return;
+        }
         $credentials = [
             'username' => 'admin',
             'password' => 'admin',
@@ -81,7 +74,7 @@ abstract class WebTestCase extends KernelTestCase
         if ($response->getStatusCode() !== Response::HTTP_OK || !isset($data['token'])) {
             throw new \RuntimeException('Failed to log in as admin. Check your credentials and login endpoint.');
         }
-
+        self::$tokenAdmin = $data['token'];
         $client->setServerParameter(key: 'HTTP_Authorization',value:  sprintf('Bearer %s', $data['token']));
         $client->setServerParameter(key: 'HTTP_ACCEPT',value:  'application/ld+json');
         $client->setServerParameter(key: 'CONTENT_TYPE',value:  'application/ld+json');
@@ -89,8 +82,14 @@ abstract class WebTestCase extends KernelTestCase
 
     public function loginCustomer(AbstractBrowser $client): void
     {
+        if (null !== self::$tokenCustomer) {
+            $client->setServerParameter(key: 'HTTP_Authorization',value:  sprintf('Bearer %s',self::$tokenCustomer));
+            $client->setServerParameter(key: 'HTTP_ACCEPT',value:  'application/ld+json');
+            $client->setServerParameter(key: 'CONTENT_TYPE',value:  'application/ld+json');
+            return;
+        }
         $credentials = [
-            'username' => 'thelia',
+            'username' => 'test@thelia.net',
             'password' => 'thelia',
         ];
 
@@ -107,9 +106,22 @@ abstract class WebTestCase extends KernelTestCase
         if ($response->getStatusCode() !== Response::HTTP_OK || !isset($data['token'])) {
             throw new \RuntimeException('Failed to log in as admin. Check your credentials and login endpoint.');
         }
-
+        self::$tokenCustomer = $data['token'];
         $client->setServerParameter(key: 'HTTP_Authorization',value:  sprintf('Bearer %s', $data['token']));
         $client->setServerParameter(key: 'HTTP_ACCEPT',value:  'application/ld+json');
         $client->setServerParameter(key: 'CONTENT_TYPE',value:  'application/ld+json');
+    }
+
+    public function login($client, string $uri): void
+    {
+        if (str_contains($uri, '/admin')) {
+            $this->loginAdmin($client);
+            return;
+        }
+        if(str_contains($uri, '/front')) {
+            $this->loginCustomer($client);
+            return;
+        }
+        throw new RuntimeException(sprintf('Cannot log for the route %s', $uri));
     }
 }
