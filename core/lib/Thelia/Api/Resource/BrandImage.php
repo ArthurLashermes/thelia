@@ -76,14 +76,14 @@ use Thelia\Model\Map\BrandImageTableMap;
 #[ApiResource(
     operations: [
         new GetCollection(
-            uriTemplate: '/admin/brand_images'
+            uriTemplate: '/front/brand_images'
         ),
         new Get(
-            uriTemplate: '/admin/brand_images/{id}',
+            uriTemplate: '/front/brand_images/{id}',
             normalizationContext: ['groups' => [self::GROUP_FRONT_READ, self::GROUP_FRONT_READ_SINGLE]]
         ),
         new Get(
-            uriTemplate: '/admin/brand_images/{id}/file',
+            uriTemplate: '/front/brand_images/{id}/file',
             controller: BinaryFileController::class,
             openapi: new Operation(
                 responses: [

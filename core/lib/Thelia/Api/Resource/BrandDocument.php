@@ -75,14 +75,14 @@ use Thelia\Model\Map\BrandDocumentTableMap;
 #[ApiResource(
     operations: [
         new GetCollection(
-            uriTemplate: '/admin/brand_documents'
+            uriTemplate: '/front/brand_documents'
         ),
         new Get(
-            uriTemplate: '/admin/brand_documents/{id}',
+            uriTemplate: '/front/brand_documents/{id}',
             normalizationContext: ['groups' => [self::GROUP_FRONT_READ, self::GROUP_FRONT_READ_SINGLE]]
         ),
         new Get(
-            uriTemplate: '/admin/brand_documents/{id}/file',
+            uriTemplate: '/front/brand_documents/{id}/file',
             controller: BinaryFileController::class,
             openapi: new Operation(
                 responses: [

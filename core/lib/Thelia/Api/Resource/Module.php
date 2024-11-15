@@ -24,9 +24,6 @@ use Thelia\Model\Map\ModuleTableMap;
 
 #[ApiResource(
     operations: [
-        new Post(
-            uriTemplate: '/admin/modules'
-        ),
         new GetCollection(
             uriTemplate: '/admin/modules'
         ),
