@@ -23,5 +23,31 @@ class CustomerTitleTest extends WebTestCase
     $this->assertEquals(201,  $client->getResponse()->getStatusCode());
 }
 
+public function test__api__admin_customer_titles_get_collection(): void
+{
+    $client = self::$client;
+    $uriTemplate = "/admin/customer_titles";
+    $this->login($client, $uriTemplate);
+    $client->request(
+        method: 'GET',
+        uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
+    );
+
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+}
+
+public function test__api__front_customer_titles_get_collection(): void
+{
+    $client = self::$client;
+    $uriTemplate = "/front/customer_titles";
+    $this->login($client, $uriTemplate);
+    $client->request(
+        method: 'GET',
+        uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
+    );
+
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+}
+
 //Entry point
 }

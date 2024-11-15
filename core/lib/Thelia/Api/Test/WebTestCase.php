@@ -11,11 +11,13 @@
 
 namespace Thelia\Api\Test;
 
+use Propel\Runtime\Propel;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestAssertionsTrait;
 use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\HttpFoundation\Response;
 use Thelia\Api\Test\Abstract\WebTestCase as BaseWebTestCase;
+use Thelia\Config\DatabaseConfiguration;
 
 /**
  * WebTestCase is the base class for functional tests.
@@ -28,24 +30,30 @@ abstract class WebTestCase extends BaseWebTestCase
 
     protected static $client;
 
+    protected static $con;
+
     protected static ?string $tokenAdmin = null;
 
     protected static ?string $tokenCustomer = null;
 
-
     protected function tearDown(): void
     {
+        static::$con->rollBack();
         parent::tearDown();
         static::$client = null;
+        static::$con = null;
     }
 
     protected function setUp(): void
     {
         parent::setUp();
-
         if (null === self::$client) {
             self::$client = static::createClient();
         }
+        if (static::$con === null) {
+            static::$con = Propel::getWriteConnection(DatabaseConfiguration::THELIA_CONNECTION_NAME);
+        }
+        static::$con->beginTransaction();
     }
 
     public function loginAdmin(AbstractBrowser $client): void

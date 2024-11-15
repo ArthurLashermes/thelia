@@ -7,20 +7,17 @@ use Faker\Factory;
 
 class ModuleTest extends WebTestCase
 {
-    public function test__api__admin_modules_post(): void
+    public function test__api__admin_modules_get_collection(): void
 {
     $client = self::$client;
-    $faker = Factory::create();
     $uriTemplate = "/admin/modules";
-    $body = ['i18ns' => ['fr_FR' => ['title' => $faker->text(maxNbChars: 20),'description' => $faker->text(maxNbChars: 20),'chapo' => $faker->text(maxNbChars: 20),'postscriptum' => $faker->text(maxNbChars: 20),],'en_US' => ['title' => $faker->text(maxNbChars: 20),'description' => $faker->text(maxNbChars: 20),'chapo' => $faker->text(maxNbChars: 20),'postscriptum' => $faker->text(maxNbChars: 20),],'es_ES' => ['title' => $faker->text(maxNbChars: 20),'description' => $faker->text(maxNbChars: 20),'chapo' => $faker->text(maxNbChars: 20),'postscriptum' => $faker->text(maxNbChars: 20),],'it_IT' => ['title' => $faker->text(maxNbChars: 20),'description' => $faker->text(maxNbChars: 20),'chapo' => $faker->text(maxNbChars: 20),'postscriptum' => $faker->text(maxNbChars: 20),]],];
     $this->login($client, $uriTemplate);
     $client->request(
-        method: 'POST',
+        method: 'GET',
         uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
-        content: json_encode($body, JSON_THROW_ON_ERROR)
     );
 
-    $this->assertEquals(201,  $client->getResponse()->getStatusCode());
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
 }
 
 //Entry point

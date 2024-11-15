@@ -7,5 +7,18 @@ use Faker\Factory;
 
 class OrderAddressTest extends WebTestCase
 {
-    //Entry point
+    public function test__api__admin_order_addresses_get_collection(): void
+{
+    $client = self::$client;
+    $uriTemplate = "/admin/order_addresses";
+    $this->login($client, $uriTemplate);
+    $client->request(
+        method: 'GET',
+        uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
+    );
+
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+}
+
+//Entry point
 }

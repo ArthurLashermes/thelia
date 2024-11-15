@@ -23,5 +23,18 @@ class NewsLetterTest extends WebTestCase
     $this->assertEquals(201,  $client->getResponse()->getStatusCode());
 }
 
+public function test__api__admin_news_letters_get_collection(): void
+{
+    $client = self::$client;
+    $uriTemplate = "/admin/news_letters";
+    $this->login($client, $uriTemplate);
+    $client->request(
+        method: 'GET',
+        uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
+    );
+
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+}
+
 //Entry point
 }

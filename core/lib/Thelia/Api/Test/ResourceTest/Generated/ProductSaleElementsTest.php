@@ -12,7 +12,7 @@ class ProductSaleElementsTest extends WebTestCase
     $client = self::$client;
     $faker = Factory::create();
     $uriTemplate = "/admin/product_sale_elements";
-    $body = ["product" => ["id" => 1],"productPrices" => [["currency" => ["id" => 1],"price" => $faker->randomFloat(2),"promoPrice" => $faker->randomFloat(2)],],"currency" => ["id" => 1],"attributeCombinations" => [["attribute" => 1,"attributeAv" => 1],],"ref" => $faker->text(maxNbChars: 20),"quantity" => $faker->numberBetween(0,10),"promo" => $faker->boolean(),"newness" => $faker->boolean(),"weight" => $faker->randomFloat(2),"isDefault" => $faker->boolean(),"eanCode" => $faker->text(maxNbChars: 20)];
+    $body = ["product" => ["id" => 1],"productPrices" => [["currency" => ["id" => 1],"price" => $faker->randomFloat(2),"promoPrice" => $faker->randomFloat(2)],],"attributeCombinations" => [["attribute" => "1","attributeAv" => "1"],],"ref" => $faker->text(maxNbChars: 20),"quantity" => $faker->numberBetween(0,10),"promo" => $faker->boolean(),"newness" => $faker->boolean(),"weight" => $faker->randomFloat(2),"isDefault" => $faker->boolean(),"eanCode" => $faker->text(maxNbChars: 20)];
     $this->login($client, $uriTemplate);
     $client->request(
         method: 'POST',
@@ -21,6 +21,32 @@ class ProductSaleElementsTest extends WebTestCase
     );
 
     $this->assertEquals(201,  $client->getResponse()->getStatusCode());
+}
+
+public function test__api__admin_product_sale_elements_get_collection(): void
+{
+    $client = self::$client;
+    $uriTemplate = "/admin/product_sale_elements";
+    $this->login($client, $uriTemplate);
+    $client->request(
+        method: 'GET',
+        uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
+    );
+
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+}
+
+public function test__api__front_product_sale_elements_get_collection(): void
+{
+    $client = self::$client;
+    $uriTemplate = "/front/product_sale_elements";
+    $this->login($client, $uriTemplate);
+    $client->request(
+        method: 'GET',
+        uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
+    );
+
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
 }
 
 //Entry point

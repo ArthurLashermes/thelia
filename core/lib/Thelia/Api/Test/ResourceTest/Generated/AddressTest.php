@@ -12,7 +12,7 @@ class AddressTest extends WebTestCase
     $client = self::$client;
     $faker = Factory::create();
     $uriTemplate = "/admin/addresses";
-    $body = ["label" => $faker->text(maxNbChars: 20),"firstname" => $faker->text(maxNbChars: 20),"lastname" => $faker->text(maxNbChars: 20),"address1" => $faker->text(maxNbChars: 20),"address2" => $faker->text(maxNbChars: 20),"address3" => $faker->text(maxNbChars: 20),"zipcode" => $faker->text(maxNbChars: 20),"company" => $faker->text(maxNbChars: 20),"cellphone" => $faker->text(maxNbChars: 20),"phone" => $faker->text(maxNbChars: 20),"city" => $faker->text(maxNbChars: 20),"isDefault" => $faker->boolean(),"country" => 1,"state" => 1,"customer" => 1,"customerTitle" => 1];
+    $body = ["label" => $faker->text(maxNbChars: 20),"firstname" => $faker->text(maxNbChars: 20),"lastname" => $faker->text(maxNbChars: 20),"address1" => $faker->text(maxNbChars: 20),"address2" => $faker->text(maxNbChars: 20),"address3" => $faker->text(maxNbChars: 20),"zipcode" => $faker->text(maxNbChars: 20),"company" => $faker->text(maxNbChars: 20),"cellphone" => $faker->text(maxNbChars: 20),"phone" => $faker->text(maxNbChars: 20),"city" => $faker->text(maxNbChars: 20),"isDefault" => $faker->boolean(),"country" => "1","state" => "1","customer" => "1","customerTitle" => "1"];
     $this->login($client, $uriTemplate);
     $client->request(
         method: 'POST',
@@ -23,12 +23,25 @@ class AddressTest extends WebTestCase
     $this->assertEquals(201,  $client->getResponse()->getStatusCode());
 }
 
+public function test__api__admin_addresses_get_collection(): void
+{
+    $client = self::$client;
+    $uriTemplate = "/admin/addresses";
+    $this->login($client, $uriTemplate);
+    $client->request(
+        method: 'GET',
+        uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
+    );
+
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+}
+
 public function test__api__front_account_addresses_post(): void
 {
     $client = self::$client;
     $faker = Factory::create();
     $uriTemplate = "/front/account/addresses";
-    $body = ["label" => $faker->text(maxNbChars: 20),"firstname" => $faker->text(maxNbChars: 20),"lastname" => $faker->text(maxNbChars: 20),"address1" => $faker->text(maxNbChars: 20),"address2" => $faker->text(maxNbChars: 20),"address3" => $faker->text(maxNbChars: 20),"zipcode" => $faker->text(maxNbChars: 20),"company" => $faker->text(maxNbChars: 20),"cellphone" => $faker->text(maxNbChars: 20),"phone" => $faker->text(maxNbChars: 20),"city" => $faker->text(maxNbChars: 20),"isDefault" => $faker->boolean(),"country" => 1,"state" => 1,"customer" => 1,"customerTitle" => 1];
+    $body = ["label" => $faker->text(maxNbChars: 20),"firstname" => $faker->text(maxNbChars: 20),"lastname" => $faker->text(maxNbChars: 20),"address1" => $faker->text(maxNbChars: 20),"address2" => $faker->text(maxNbChars: 20),"address3" => $faker->text(maxNbChars: 20),"zipcode" => $faker->text(maxNbChars: 20),"company" => $faker->text(maxNbChars: 20),"cellphone" => $faker->text(maxNbChars: 20),"phone" => $faker->text(maxNbChars: 20),"city" => $faker->text(maxNbChars: 20),"isDefault" => $faker->boolean(),"country" => "1","state" => "1","customer" => "1","customerTitle" => "1"];
     $this->login($client, $uriTemplate);
     $client->request(
         method: 'POST',
@@ -37,6 +50,19 @@ public function test__api__front_account_addresses_post(): void
     );
 
     $this->assertEquals(201,  $client->getResponse()->getStatusCode());
+}
+
+public function test__api__front_account_addresses_get_collection(): void
+{
+    $client = self::$client;
+    $uriTemplate = "/front/account/addresses";
+    $this->login($client, $uriTemplate);
+    $client->request(
+        method: 'GET',
+        uri: sprintf('%s%s', $_ENV['API_BASE_URL'], $uriTemplate),
+    );
+
+    $this->assertEquals(200,  $client->getResponse()->getStatusCode());
 }
 
 //Entry point
