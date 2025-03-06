@@ -276,13 +276,38 @@ class ProductSaleElement extends BaseAction implements EventSubscriberInterface
         $con->beginTransaction();
 
         try {
-            // Delete all product's productSaleElement
-            ProductSaleElementsQuery::create()->filterByProductId($event->product->getId())->delete();
-
+            $combinationsAlreadyExist = [];
+            $productSaleElements = ProductSaleElementsQuery::create()->filterByProductId($event->product->getId())->find();
+            foreach ($productSaleElements as $productSaleElement) {
+                foreach ($productSaleElement->getAttributeCombinationsJoinAttributeAv() as $attributeAv) {
+                    $attributeCombination = AttributeCombinationQuery::create()
+                        ->filterByAttributeId($attributeAv?->getAttributeId())
+                        ->filterByProductSaleElementsId($productSaleElement->getId())
+                        ->filterByAttributeAvId($attributeAv?->getAttributeAvId())
+                        ->findOne();
+                    if ($attributeCombination){
+                        $combinationsAlreadyExist[$productSaleElement->getId()][] = (string)$attributeCombination->getAttributeAvId();
+                    }
+                }
+            }
             $isDefault = true;
+            $defaultProductSaleElement = ProductSaleElementsQuery::create()->filterByProductId($event->product->getId())->filterByIsDefault(true)->findOne();
+            if ($defaultProductSaleElement){
+                $isDefault = false;
+            }
 
             // Create all combinations
+            $productCombinationsGenerationCanceled = [];
             foreach ($event->getCombinations() as $combinationAttributesAvIds) {
+                foreach ($combinationsAlreadyExist as $pse => $attributeAvIds) {
+                    $attributeAvIds = array_unique($attributeAvIds);
+                    sort($combinationAttributesAvIds, SORT_NUMERIC);
+                    sort($attributeAvIds,SORT_NUMERIC);
+                    if ($attributeAvIds  === $combinationAttributesAvIds){
+                        $productCombinationsGenerationCanceled[] = $attributeAvIds;
+                        continue 2;
+                    }
+                }
                 // Create the PSE
                 $saleElement = $event->getProduct()->createProductSaleElement(
                     $con,
@@ -302,7 +327,10 @@ class ProductSaleElement extends BaseAction implements EventSubscriberInterface
 
                 $this->createCombination($con, $saleElement, $combinationAttributesAvIds);
             }
-
+            $event->setProductCombinationsGenerationCanceled($productCombinationsGenerationCanceled);
+            if (!empty($productCombinationsGenerationCanceled)){
+                $con->rollBack();
+            }
             // Store all the stuff !
             $con->commit();
         } catch (\Exception $ex) {

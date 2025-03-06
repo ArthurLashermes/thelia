@@ -1281,8 +1281,26 @@ class ProductController extends AbstractSeoCrudController
                 ->setEanCode($data['ean_code'] == null ? '' : $data['ean_code'])
             ;
 
-            $eventDispatcher->dispatch($event, TheliaEvents::PRODUCT_COMBINATION_GENERATION);
-
+            $event = $eventDispatcher->dispatch($event, TheliaEvents::PRODUCT_COMBINATION_GENERATION);
+            $canceledCombination = $event->getProductCombinationsGenerationCanceled();
+            $errorMsg = $this->translator->trans('A combination already exists for these : ').'<br>';
+            foreach ($canceledCombination as $combination) {
+                $total = count($combination);
+                $current = 0;
+                foreach ($combination as $attributeAvId) {
+                    $attributeAv = AttributeAvQuery::create()->filterById($attributeAvId)->findOne();
+                    $attribute = $attributeAv?->getAttribute();
+                    $errorMsg .= $attribute->getTitle(). ' : ';
+                    if ($current === $total - 1){
+                        $errorMsg .= $attributeAv?->getTitle(). ',<br>';
+                        continue;
+                    }
+                    $errorMsg .= $attributeAv?->getTitle() . ' | ' ;
+                    $current++;
+                }
+            }
+            $changeForm->setError();
+            $changeForm->setErrorMessage($errorMsg);
             // Log object modification
             $this->adminLogAppend(
                 $this->resourceCode,
@@ -1294,6 +1312,14 @@ class ProductController extends AbstractSeoCrudController
                 $event->getProduct()->getId()
             );
 
+            if (!empty($canceledCombination)){
+                $this->setupFormErrorContext(
+                    $this->getTranslator()->trans('Combination builder'),
+                    strip_tags($errorMsg),
+                    $changeForm,
+                );//Todo see Uncaught ReferenceError: ReactDOM is not defined
+                return $this->renderEditionTemplate();
+            }
             // Redirect to the success URL
             return $this->generateSuccessRedirect($changeForm);
         } catch (FormValidationException $ex) {

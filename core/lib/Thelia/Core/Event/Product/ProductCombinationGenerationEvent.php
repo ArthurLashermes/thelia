@@ -26,6 +26,7 @@ class ProductCombinationGenerationEvent extends ProductEvent
     protected $isnew;
     protected $ean_code;
     protected $combinations;
+    protected array $productCombinationsGenerationCanceled = [];
 
     public function __construct(Product $product, $currency_id, $combinations)
     {
@@ -152,6 +153,17 @@ class ProductCombinationGenerationEvent extends ProductEvent
     {
         $this->combinations = $combinations;
 
+        return $this;
+    }
+
+    public function getProductCombinationsGenerationCanceled(): array
+    {
+        return $this->productCombinationsGenerationCanceled;
+    }
+
+    public function setProductCombinationsGenerationCanceled(array $productCombinationsGenerationCanceled): ProductCombinationGenerationEvent
+    {
+        $this->productCombinationsGenerationCanceled = $productCombinationsGenerationCanceled;
         return $this;
     }
 }

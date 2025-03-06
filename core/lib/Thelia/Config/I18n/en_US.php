@@ -1,16 +1,6 @@
 <?php
 
-/*
- * This file is part of the Thelia package.
- * http://www.thelia.net
- *
- * (c) OpenStudio <info@thelia.net>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-return [
+return array(
     ' content create form' => ' content creation form',
     ' note: only non-visible documents can be associated.' => ' note: only non-visible documents can be associated.',
     '"%param" parameter cannot be empty in loop type: %type, name: %name' => '"%param" parameter cannot be empty in loop type: %type, name: %name',
@@ -27,6 +17,7 @@ return [
     '%type% position updated' => '%type% position updated',
     '%type% visibility updated' => '%type% visibility updated',
     'A Hook with code %name already exists. Please choose another code.' => 'A Hook with code %name already exists. Please choose another code.',
+    'A combination already exists for these : ' => 'Une combinaison existe déjà pour ceux-ci :',
     'A comma separated list of email addresses' => 'A comma separated list of email addresses',
     'A currency with code "%name" already exists.' => 'A currency with code "%name" already exists.',
     'A descriptive title' => 'A descriptive title',
@@ -119,7 +110,9 @@ return [
     'Category page' => 'Category page',
     'Category title' => 'Category title',
     'Cellphone' => 'Cellphone',
+    'Change long title for' => 'Change long title for',
     'Change password' => 'Change password',
+    'Change short title for' => 'Change short title for',
     'Check country iso codes <a href="http://en.wikipedia.org/wiki/ISO_3166-1#Current_codes" target="_blank">here</a>.' => 'Check country iso codes <a href="http://en.wikipedia.org/wiki/ISO_3166-1#Current_codes" target="_blank">in Wikipedia</a>.',
     'Check the total Cart amount in the given currency' => 'Check the total Cart amount in the given currency',
     'Choice a color for this order status code' => 'Choice a color for this order status code',
@@ -224,7 +217,6 @@ return [
     'Failed to load message with code \'%code%\', propably because it does\'nt exists.' => 'Failed to load message with code \'%code%\', probably because it does\'nt exists.',
     'Failed to open a writing stream on the file: %file' => 'Failed to open a writing stream on the file: %file',
     'Failed to open translation file %file. Please be sure that this file is writable by your Web server' => 'Failed to open translation file %file. Please be sure that this file is writable by your Web server',
-    'Failed to send message %code. Failed recipients: %failed_addresses' => 'Failed to send message %code. Failed recipients: %failed_addresses',
     'Failed to update language definition: %ex' => 'Failed to update language definition: %ex',
     'Favicon image' => 'Favicon image',
     'Fax' => 'Fax',
@@ -327,7 +319,6 @@ return [
     'Make this address as my primary address' => 'Make this address as my primary address',
     'Maximum usage count reached for coupon %code' => 'Maximum usage count reached for coupon %code',
     'Message' => 'Message',
-    'Message content: %message%' => 'Message content: %message%',
     'Message name' => 'Message name',
     'Message subject' => 'Message subject',
     'Messages' => 'Messages',
@@ -414,7 +405,6 @@ return [
     'Postage' => 'Postage',
     'Preferred language' => 'Preferred language',
     'Preferred locale' => 'Preferred locale',
-    'Prevent mailing template modification or deletion, except for super-admin' => 'Prevent mailing template modification or deletion, except for super-admin',
     'Prevent variable modification or deletion, except for super-admin' => 'Prevent variable modification or deletion, except for super-admin',
     'Price currency *' => 'Price currency *',
     'Processing cancelation of payment for order ref. %ref' => 'Processing cancelation of payment for order ref. %ref',
@@ -487,8 +477,6 @@ return [
     'Select the products covered by this operation' => 'Select the products covered by this operation',
     'Select the virtual document' => 'Select the virtual document',
     'Send test e-mail to:' => 'Send test e-mail to:',
-    'Sender\'s e-mail address: %email%' => 'Sender\'s e-mail address: %email%',
-    'Sender name: %name%' => 'Sender name: %name%',
     'Service ID' => 'Service ID',
     'Shipping configuration' => 'Shipping configuration',
     'Shipping zone name' => 'Shipping zone name',
@@ -554,7 +542,6 @@ return [
     'The category title' => 'The category title',
     'The class "%class" doesn\'t exist' => 'The class "%class" doesn\'t exist',
     'The class "%class" must extend %baseClass' => 'The class "%class" must extend %baseClass',
-    'The container should not be null in this form. Please use the FormFactory to get an instance.' => 'The container should not be null in this form. Please use the FormFactory to get an instance.',
     'The coupon applies if the cart contains at least one product of the selected categories' => 'The coupon applies if the cart contains at least one product of the selected categories',
     'The coupon applies if the cart contains at least one product of the specified product list' => 'The coupon applies if the cart contains at least one product of the specified product list',
     'The coupon applies to some customers only' => 'The coupon applies to some customers only',
@@ -576,7 +563,6 @@ return [
     'The mailing template in HTML format.' => 'The mailing template in HTML format.',
     'The mailing template in text-only format.' => 'The mailing template in text-only format.',
     'The message has been successfully sent to %recipient.' => 'The message has been successfully sent to %recipient.',
-    'The method %method% doesn\'t exist in classname %classname%' => 'The method %method% doesn\'t exist in classname %classname%',
     'The method name that will handle the hook event.' => 'The method name that will handle the hook event.',
     'The module "%name%" is currently in use by at least one order, and can\'t be deleted.' => 'The module "%name%" is currently in use by at least one order, and can\'t be deleted.',
     'The module %module has been installed successfully.' => 'The module %module has been installed successfully.',
@@ -614,7 +600,6 @@ return [
     'There is no id "%ref" in the imports' => 'There is no id "%ref" in the imports',
     'There is no ref "%ref" in the exports' => 'There is no ref "%ref" in the exports',
     'There\'s a conflict between your file extension "%ext" and the mime type "%mime"' => 'There\'s a conflict between your file extension "%ext" and the mime type "%mime"',
-    'This PHP extension should be installed and loaded.' => 'This PHP extension should be installed and loaded.',
     'This administrator login already exists' => 'This administrator login already exists',
     'This brand is online' => 'This brand is online',
     'This category is online' => 'This category is online',
@@ -667,8 +652,6 @@ return [
     'To activate module %name, the following modules should be activated first: %modules' => 'To activate module %name, the following modules should be activated first: %modules',
     'Tools' => 'Tools',
     'Translations' => 'Translations',
-    'Change short title for' => 'Change short title for',
-    'Change long title for' => 'Change long title for',
     'Tried to download a file, but the URL was not valid: %url' => 'Tried to download a file, but the URL was not valid: %url',
     'Type' => 'Type',
     'URL_ALREADY_EXISTS' => 'This URL already exists',
@@ -738,7 +721,6 @@ return [
     'after the order summary' => 'after the order summary',
     'after top bar' => 'after top bar',
     'after top menu' => 'after top menu',
-    'api id %id does not exists' => 'api id %id does not exists',
     'at the bottom' => 'at the bottom',
     'at the bottom of column 1' => 'at the bottom of column 1',
     'at the bottom of information area' => 'at the bottom of information area',
@@ -835,7 +817,6 @@ return [
     'inside top bar' => 'inside top bar',
     'javascript' => 'javascript',
     'javascript initialization' => 'javascript initialization',
-    'label' => 'label',
     'language locale' => 'language locale',
     'language selection page' => 'language selection page',
     'list JavaScript' => 'list JavaScript',
@@ -878,4 +859,4 @@ return [
     'update form' => 'update form',
     'value table header' => 'value table header',
     'value table row' => 'value table row',
-];
+);
